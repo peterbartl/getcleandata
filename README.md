@@ -1,0 +1,12 @@
+README.md
+--------
+This file
+
+
+CodeBook.md
+-------
+Describes the data download, extraction and then how the data are processed in run_analysis.R to clean up the data.
+
+run_analysis.R
+-------
+R-file that takes the raw data and transforms them into a tidy data set with the specified properties.

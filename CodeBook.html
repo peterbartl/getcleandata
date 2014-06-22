@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>CodeBook</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>CodeBook</h1>
+
+<h2>Download the data</h2>
+
+<p>A zip file containing the data was downloaded from the course page (<a href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip</a>)</p>
+
+<h2>Extract zip file</h2>
+
+<p>The zip file is extracted to a folder of choice</p>
+
+<h2>Folder structure</h2>
+
+<p>The parent folder (UCI HAR Dataset) contains four text files (README.txt, features_info.txt, features.txt, activity_labels.txt) and two subfolders (train, test) with more text files.</p>
+
+<h2>Set working directory (start of run_analysis.R)</h2>
+
+<p>As a first step, the working directory in R has to be set to the parent folder (UCI HAR Dataset). The path is depending on where the zip file was extracted to on the hard drive.</p>
+
+<h2>Load all relevant files from working directory</h2>
+
+<p>The following list of files is loaded into R with the read.table() function</p>
+
+<ul>
+<li>X_test.txt (data.frame with features in test set)</li>
+<li>y_test.txt (data.frame with activities in test set)</li>
+<li>subject_test.txt (data.frame with subject labels for test set)</li>
+<li>X_train.txt (data.frame with features in train set)</li>
+<li>y_train.txt (data.frame with activities in train set)</li>
+<li>subject_train.txt (data.frame with subject labels for train set)</li>
+<li>activity_labels.txt (data.frame with descriptive activity names)</li>
+<li>features.txt (data.frame with descriptive feature names)</li>
+</ul>
+
+<h2>Feature names</h2>
+
+<p>The descriptive feature names are used to label the columns of the train and test data.</p>
+
+<h2>Activity names and labeling</h2>
+
+<p>The descriptive activity names are used to replace the numberic activity designations and the activity column is named as &#39;activity&#39; in the training and test data. </p>
+
+<h2>Subject name</h2>
+
+<p>The subject column is named as &#39;subject&#39; in the training and test data.</p>
+
+<h2>Merge training and test sets</h2>
+
+<p>The columns for activity, subject and features are combinded (cbind) for the train and test data separately.
+Then the two data.frames are combined (rbind) to get one merged data set with all observations.</p>
+
+<h2>Find variable columns that describe mean or standard deviation variables</h2>
+
+<p>Via regular expressions, a vector of column names is created containing all variables that describe a mean or standard deviation for a measurement.</p>
+
+<h2>Create subset</h2>
+
+<p>A subset of the merged data is created where the variable columns are reduced to the specified mean/std measurements. The columns for activity and subject remain in the new data set.</p>
+
+<h2>Reshape subset</h2>
+
+<p>The new data set is reshaped into a tall data set with four columns. The id-variables &#39;activity&#39; and &#39;subject&#39; are columns one and two. All measurement variables and values are in columns three and four.</p>
+
+<h2>Calculate average of each variable for each activity and each subject</h2>
+
+<p>The data.frame is split by &#39;activity&#39;,&#39;subject&#39; and &#39;variable&#39; to calculate the average of the corresponding values</p>
+
+<h2>Write result to file</h2>
+
+<p>The tidy data.frame is saved with the write.table() function to a text file for submission.</p>
+
+</body>
+
+</html>
+
